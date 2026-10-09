@@ -191,15 +191,10 @@ function navigateTo(screenId) {
 }
 
 function jumpToScreen(screenId) {
-  // Switch to prototype tab and go to screen
-  document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("active"));
-  document.getElementById("tabPrototype").classList.add("active");
-  document.querySelectorAll(".figma-view").forEach(v => v.classList.remove("active"));
-  document.getElementById("viewPrototype").classList.add("active");
   navigateTo(screenId);
 }
 
-// Tabs Switching
+// Tabs Switching (Safe for clean demo mode)
 function setupTabs() {
   document.querySelectorAll(".figma-tabs .tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -209,10 +204,15 @@ function setupTabs() {
       const tabId = btn.getAttribute("data-tab");
       document.querySelectorAll(".figma-view").forEach(v => v.classList.remove("active"));
 
-      if (tabId === "prototype") document.getElementById("viewPrototype").classList.add("active");
-      if (tabId === "canvas") document.getElementById("viewCanvas").classList.add("active");
-      if (tabId === "tokens") document.getElementById("viewTokens").classList.add("active");
-      if (tabId === "inspect") document.getElementById("viewInspect").classList.add("active");
+      const vProto = document.getElementById("viewPrototype");
+      const vCanvas = document.getElementById("viewCanvas");
+      const vTokens = document.getElementById("viewTokens");
+      const vInspect = document.getElementById("viewInspect");
+
+      if (tabId === "prototype" && vProto) vProto.classList.add("active");
+      if (tabId === "canvas" && vCanvas) vCanvas.classList.add("active");
+      if (tabId === "tokens" && vTokens) vTokens.classList.add("active");
+      if (tabId === "inspect" && vInspect) vInspect.classList.add("active");
     });
   });
 
