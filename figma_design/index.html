@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FieldOrder - Figma Design System & Interactive Prototype</title>
+  <meta name="description" content="Offline-First Sales Rep Mobile App for Wholesale Distribution. Interactive Figma Design System, Prototype Canvas, and Developer Handoff Studio.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="figma-workspace">
+  <!-- Top Application Bar (Figma Style) -->
+  <header class="figma-header">
+    <div class="header-left">
+      <div class="figma-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect width="24" height="24" rx="6" fill="#2563EB"/>
+            <path d="M7 12L10.5 15.5L17 8.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="project-title">FieldOrder • Wholesale Sales Rep App</span>
+          <span class="project-subtitle">Prosessed.ai Offline-First Architecture & Design System</span>
+        </div>
+      </div>
+      <div class="status-pill sync-status-pill online" id="globalNetIndicator">
+        <span class="pulse-dot"></span>
+        <span id="globalNetLabel">Online (API Connected)</span>
+      </div>
+    </div>
+
+    <!-- Mode Selector Tabs -->
+    <nav class="figma-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="prototype" role="tab" id="tabPrototype">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        Interactive Prototype
+      </button>
+      <button class="tab-btn" data-tab="canvas" role="tab" id="tabCanvas">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        All Screens Canvas (Figma Artboards)
+      </button>
+      <button class="tab-btn" data-tab="tokens" role="tab" id="tabTokens">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 9 9h-9z"/></svg>
+        Design Tokens & Specs
+      </button>
+      <button class="tab-btn" data-tab="inspect" role="tab" id="tabInspect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Developer Handoff (Flutter/BLoC)
+      </button>
+    </nav>
+
+    <div class="header-right">
+      <div class="simulation-controls">
+        <button class="btn-toggle-net" id="btnToggleOffline" title="Toggle Offline Network Simulation">
+          <span class="net-icon">📶</span>
+          <span id="btnNetLabel">Simulate Offline</span>
+        </button>
+        <button class="btn-icon" id="btnThemeToggle" title="Toggle Light/Dark Theme">
+          🌓
+        </button>
+      </div>
+      <a href="#github-repo" class="btn-primary-action" id="btnOpenDocs">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        Clean Arch Code
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Figma Work Area -->
+  <main class="figma-body">
+
+    <!-- VIEW 1: INTERACTIVE PROTOTYPE (Single Device with full state & flows) -->
+    <section class="figma-view active" id="viewPrototype">
+      <!-- Prototype Sidebar / Screen Selector -->
+      <aside class="screen-flow-nav">
+        <div class="sidebar-section-title">USER FLOWS</div>
+        <ul class="flow-list">
+          <li class="flow-item active" data-screen="dashboard">
+            <span class="flow-num">01</span>
+            <div class="flow-info">
+              <span class="flow-name">Rep Dashboard</span>
+              <span class="flow-desc">KPIs, sync pill, fast route</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="customers">
+            <span class="flow-num">02</span>
+            <div class="flow-info">
+              <span class="flow-name">Customer Directory</span>
+              <span class="flow-desc">Instant search & balance check</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="customer_detail">
+            <span class="flow-num">03</span>
+            <div class="flow-info">
+              <span class="flow-name">Customer 360</span>
+              <span class="flow-desc">Profile, order history, 1-tap new</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="products">
+            <span class="flow-num">04</span>
+            <div class="flow-info">
+              <span class="flow-name">Product Catalog</span>
+              <span class="flow-desc">Categories, stock badge, pack info</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="cart">
+            <span class="flow-num">05</span>
+            <div class="flow-info">
+              <span class="flow-name">Cart & Pricing</span>
+              <span class="flow-desc">Carton/box/piece, line discounts</span>
+            </div>
+            <span class="badge-count" id="navCartCount">0</span>
+          </li>
+          <li class="flow-item" data-screen="order_confirm">
+            <span class="flow-num">06</span>
+            <div class="flow-info">
+              <span class="flow-name">Order Confirmation</span>
+              <span class="flow-desc">Draft ➡️ Locked ➡️ Outbox</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="sync_manager">
+            <span class="flow-num">07</span>
+            <div class="flow-info">
+              <span class="flow-name">Outbox & Sync Engine</span>
+              <span class="flow-desc">Queue, backoff, 409 conflict test</span>
+            </div>
+            <span class="badge-count warning" id="navPendingCount">0</span>
+          </li>
+          <li class="flow-item" data-screen="order_history">
+            <span class="flow-num">08</span>
+            <div class="flow-info">
+              <span class="flow-name">Order History & Reorder</span>
+              <span class="flow-desc">Timeline & 1-tap cart clone</span>
+            </div>
+          </li>
+          <li class="flow-item" data-screen="ai_order">
+            <span class="flow-num">09</span>
+            <div class="flow-info">
+              <span class="flow-name">AI Order Parser (Voice/Text)</span>
+              <span class="flow-desc">Freeform ➡️ Structured cart</span>
+            </div>
+            <span class="sparkle-tag">AI</span>
+          </li>
+          <li class="flow-item" data-screen="login">
+            <span class="flow-num">10</span>
+            <div class="flow-info">
+              <span class="flow-name">Auth & Token Session</span>
+              <span class="flow-desc">Secure storage & refresh token</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="sidebar-meta-card">
+          <div class="meta-title">Clean Architecture Flow</div>
+          <div class="meta-diagram">
+            <code>UI (BLoC)</code> ➡️ <code>Local DB (Drift)</code> ⬅️ <code>Sync Engine</code> ➡️ <code>Dio API</code>
+          </div>
+          <p class="meta-note">Offline-first rule: UI always reads from SQLite/Drift. Network only writes to local DB.</p>
+        </div>
+      </aside>
+
+      <!-- Center Device Stage -->
+      <div class="device-stage">
+        <!-- Device Top Toolbar -->
+        <div class="stage-toolbar">
+          <div class="device-selector">
+            <button class="device-btn active" data-device="iphone">iPhone 16 Pro (393 × 852)</button>
+            <button class="device-btn" data-device="pixel">Pixel 9 / Material 3 (412 × 915)</button>
+          </div>
+          <div class="stage-zoom">
+            <span id="currentScreenTitle">Rep Dashboard</span>
+          </div>
+        </div>
+
+        <!-- Phone Frame -->
+        <div class="device-frame iphone-16" id="deviceFrame">
+          <!-- Hardware Elements -->
+          <div class="dynamic-island">
+            <div class="island-camera"></div>
+            <div class="island-sensor"></div>
+          </div>
+
+          <!-- Phone Status Bar -->
+          <div class="phone-status-bar">
+            <span class="status-time" id="statusTime">09:41</span>
+            <div class="status-icons">
+              <span class="status-net" id="phoneNetIcon">5G</span>
+              <span class="status-wifi">􀙇</span>
+              <span class="status-battery">100% 􀛨</span>
+            </div>
+          </div>
+
+          <!-- Offline Global Warning Banner -->
+          <div class="offline-global-banner hidden" id="offlineBanner">
+            <div class="banner-content">
+              <span class="banner-icon">⚠️</span>
+              <span class="banner-text">Working Offline — Orders queued in local outbox</span>
+            </div>
+            <button class="btn-banner-sync" id="btnSyncBanner">Sync Now</button>
+          </div>
+
+          <!-- Device App Body (Screen Swapper) -->
+          <div class="app-screen-container" id="screenContainer">
+            <!-- Screen 1: Dashboard -->
+            <div class="app-screen active" id="screen-dashboard">
+              <div class="screen-appbar">
+                <div class="rep-avatar">VR</div>
+                <div class="appbar-title">
+                  <h2>Vikram Rathore</h2>
+                  <span class="rep-badge">South Zone • Route #4</span>
+                </div>
+                <button class="icon-btn-round" id="btnQuickSync" title="Sync Status">
+                  <span class="sync-icon-rotate">🔄</span>
+                  <span class="pill-dot warning" id="dashSyncDot"></span>
+                </button>
+              </div>
+
+              <div class="screen-scrollable">
+                <!-- Sync Health Card -->
+                <div class="sync-summary-card" id="dashSyncCard">
+                  <div class="sync-summary-top">
+                    <div class="sync-indicator-group">
+                      <span class="sync-status-badge synced" id="dashSyncBadge">Database Synced</span>
+                      <span class="sync-time-stamp" id="dashSyncTime">Just now</span>
+                    </div>
+                    <button class="text-btn-accent" onclick="navigateTo('sync_manager')">View Outbox</button>
+                  </div>
+                  <div class="sync-metric-row">
+                    <div class="sync-metric">
+                      <span class="metric-val" id="kpiPendingCount">0</span>
+                      <span class="metric-lbl">Pending Sync</span>
+                    </div>
+                    <div class="sync-metric">
+                      <span class="metric-val">500</span>
+                      <span class="metric-lbl">Products Cached</span>
+                    </div>
+                    <div class="sync-metric">
+                      <span class="metric-val">50</span>
+                      <span class="metric-lbl">Local Customers</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Daily Performance -->
+                <div class="kpi-grid">
+                  <div class="kpi-card">
+                    <span class="kpi-label">Today's Orders</span>
+                    <span class="kpi-value" id="kpiTodayOrders">4</span>
+                    <span class="kpi-sub positive">↑ 2 synced to ERP</span>
+                  </div>
+                  <div class="kpi-card accent">
+                    <span class="kpi-label">Today's Bookings</span>
+                    <span class="kpi-value" id="kpiTodayRevenue">₹48,250</span>
+                    <span class="kpi-sub">Target: ₹60,000</span>
+                  </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-action-grid">
+                  <button class="action-tile primary" onclick="navigateTo('customers')">
+                    <span class="tile-icon">👥</span>
+                    <span class="tile-text">New Order for Customer</span>
+                  </button>
+                  <button class="action-tile ai-glow" onclick="navigateTo('ai_order')">
+                    <span class="tile-icon">✨</span>
+                    <span class="tile-text">AI Voice / Text Order</span>
+                  </button>
+                  <button class="action-tile" onclick="navigateTo('products')">
+                    <span class="tile-icon">📦</span>
+                    <span class="tile-text">Browse 500 Products</span>
+                  </button>
+                  <button class="action-tile" onclick="navigateTo('order_history')">
+                    <span class="tile-icon">📋</span>
+                    <span class="tile-text">Order History & Reorder</span>
+                  </button>
+                </div>
+
+                <!-- Today's Route Shops -->
+                <div class="section-header-row">
+                  <h3 class="section-title">Today's Route (South Market)</h3>
+                  <button class="link-btn" onclick="navigateTo('customers')">View All (50)</button>
+                </div>
+                <div class="compact-customer-list" id="dashRecentCustomers">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 2: Customers List -->
+            <div class="app-screen" id="screen-customers">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                <div class="appbar-title">
+                  <h2>Wholesale Customers</h2>
+                  <span class="sub-text">50 Local Offline Accounts</span>
+                </div>
+                <button class="icon-btn-round" id="btnAddCustomerBtn" title="Add Customer">+</button>
+              </div>
+
+              <!-- Search Bar (<3s responsive filter) -->
+              <div class="search-bar-wrap">
+                <div class="search-input-box">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="customerSearchInput" placeholder="Search customer, phone, or market..." autocomplete="off">
+                  <button class="clear-btn hidden" id="clearCustomerSearch">✕</button>
+                </div>
+              </div>
+
+              <!-- City / Filter Chips -->
+              <div class="filter-chips-scroller" id="customerCityChips">
+                <button class="chip active" data-city="all">All Cities</button>
+                <button class="chip" data-city="Mumbai">Mumbai</button>
+                <button class="chip" data-city="Pune">Pune</button>
+                <button class="chip" data-city="Bengaluru">Bengaluru</button>
+                <button class="chip" data-city="Ahmedabad">Ahmedabad</button>
+                <button class="chip" data-city="Delhi">Delhi</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <div class="customer-cards-list" id="customerCardsContainer">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 3: Customer Detail (360) -->
+            <div class="app-screen" id="screen-customer_detail">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('customers')">←</button>
+                <div class="appbar-title">
+                  <h2 id="cdName">Raju Traders</h2>
+                  <span class="sub-text" id="cdId">cus_101</span>
+                </div>
+                <button class="icon-btn-round" title="Edit Customer" id="btnEditCust">✎</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <div class="customer-hero-card">
+                  <div class="hero-header">
+                    <div>
+                      <h3 class="hero-cust-name" id="cdHeroName">Raju Traders</h3>
+                      <p class="hero-cust-address" id="cdHeroAddress">Shop #45, Main Market, Road No 3, Mumbai</p>
+                      <p class="hero-cust-phone" id="cdHeroPhone">+91 98201 44521</p>
+                    </div>
+                    <span class="status-pill green">Verified Account</span>
+                  </div>
+
+                  <div class="credit-metric-box">
+                    <div class="credit-item">
+                      <span class="metric-label">Outstanding Balance</span>
+                      <span class="credit-amount danger" id="cdBalance">₹15,400</span>
+                    </div>
+                    <div class="credit-item">
+                      <span class="metric-label">Last Order Date</span>
+                      <span class="credit-amount" id="cdLastOrder">2 days ago</span>
+                    </div>
+                  </div>
+
+                  <div class="hero-cta-row">
+                    <button class="btn-primary-large" id="btnStartOrderForCust">
+                      🛒 Start New Order for this Shop
+                    </button>
+                  </div>
+                </div>
+
+                <div class="section-header-row">
+                  <h3 class="section-title">Past Orders for this Shop</h3>
+                </div>
+                <div class="customer-orders-timeline" id="cdPastOrders">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 4: Product Catalog / Picker -->
+            <div class="app-screen" id="screen-products">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                <div class="appbar-title">
+                  <h2>Product Catalog</h2>
+                  <span class="sub-text" id="catalogForCustomerText">All 500 Offline SKUs</span>
+                </div>
+                <button class="cart-appbar-btn" onclick="navigateTo('cart')">
+                  🛒 <span class="cart-pill-count" id="catalogCartPill">0</span>
+                </button>
+              </div>
+
+              <!-- Product Search -->
+              <div class="search-bar-wrap">
+                <div class="search-input-box">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="productSearchInput" placeholder="Search by name, SKU, or barcode..." autocomplete="off">
+                  <button class="clear-btn hidden" id="clearProductSearch">✕</button>
+                </div>
+              </div>
+
+              <!-- Category Chips -->
+              <div class="filter-chips-scroller" id="productCategoryChips">
+                <button class="chip active" data-category="all">All (500)</button>
+                <button class="chip" data-category="Packaged Foods">Packaged Foods</button>
+                <button class="chip" data-category="Beverages">Beverages</button>
+                <button class="chip" data-category="Biscuits & Snacks">Biscuits & Snacks</button>
+                <button class="chip" data-category="Staples & Grains">Staples & Grains</button>
+                <button class="chip" data-category="Personal Care">Personal Care</button>
+                <button class="chip" data-category="Household & Cleaners">Household</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <div class="products-grid-list" id="productsListContainer">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Floating Bottom Cart Bar -->
+              <div class="bottom-floating-cart-bar hidden" id="floatingCartBar">
+                <div class="bar-summary">
+                  <span class="bar-count" id="floatingItemsCount">0 items</span>
+                  <span class="bar-total" id="floatingTotalAmount">₹0.00</span>
+                </div>
+                <button class="btn-checkout-jump" onclick="navigateTo('cart')">
+                  View Cart & Pricing →
+                </button>
+              </div>
+            </div>
+
+            <!-- Screen 5: Cart & Order Pricing Engine -->
+            <div class="app-screen" id="screen-cart">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('products')">←</button>
+                <div class="appbar-title">
+                  <h2>Review Cart & Pricing</h2>
+                  <span class="sub-text" id="cartCustomerSub">Customer: Raju Traders</span>
+                </div>
+                <button class="icon-btn-round" title="Clear Cart" id="btnClearCart">🗑</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <!-- Cart Lines List -->
+                <div class="cart-items-wrapper" id="cartItemsList">
+                  <!-- Populated dynamically -->
+                </div>
+
+                <!-- Order Notes & Delivery Date -->
+                <div class="order-notes-box">
+                  <label for="orderNotesInput">Delivery Instructions / Rep Notes</label>
+                  <textarea id="orderNotesInput" rows="2" placeholder="e.g. Deliver Tuesday before 11 AM, invoice copy required"></textarea>
+                </div>
+
+                <!-- Price Breakdown Card -->
+                <div class="pricing-summary-card">
+                  <h4 class="card-heading">Price Breakdown</h4>
+                  <div class="price-row">
+                    <span>Gross Subtotal</span>
+                    <span id="priceSubtotal">₹0.00</span>
+                  </div>
+                  <div class="price-row green">
+                    <span>Discounts & Promotions</span>
+                    <span id="priceDiscount">-₹0.00</span>
+                  </div>
+                  <div class="price-row">
+                    <span>Tax / GST (Included)</span>
+                    <span id="priceGst">₹0.00</span>
+                  </div>
+                  <div class="price-divider"></div>
+                  <div class="price-row total-row">
+                    <span>Net Total Payable</span>
+                    <span class="grand-total" id="priceGrandTotal">₹0.00</span>
+                  </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="cart-action-section">
+                  <button class="btn-confirm-order" id="btnSubmitOrderAction">
+                    Confirm Order & Queue to Outbox 🔒
+                  </button>
+                  <p class="offline-guarantee-note">
+                    ⚡ Guaranteed offline write: Saved to SQLite & Outbox in 1 transaction.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 6: Order Confirmation & Lock State -->
+            <div class="app-screen" id="screen-order_confirm">
+              <div class="screen-scrollable text-center">
+                <div class="confirm-celebration">
+                  <div class="celebration-icon">✓</div>
+                  <h2 class="confirm-title">Order Confirmed & Locked!</h2>
+                  <p class="confirm-subtitle" id="confirmStatusText">Queued in Outbox for Auto-Sync</p>
+                </div>
+
+                <div class="order-ticket-card">
+                  <div class="ticket-header">
+                    <span class="ticket-id" id="confirmOrderId">ORD-UUID-7718</span>
+                    <span class="status-pill pending" id="confirmSyncPill">Pending Sync</span>
+                  </div>
+                  <div class="ticket-divider"></div>
+                  <div class="ticket-details">
+                    <div class="td-row">
+                      <span class="lbl">Customer</span>
+                      <span class="val" id="confirmCustomer">Raju Traders</span>
+                    </div>
+                    <div class="td-row">
+                      <span class="lbl">Total Items</span>
+                      <span class="val" id="confirmLinesCount">2 Products</span>
+                    </div>
+                    <div class="td-row">
+                      <span class="lbl">Total Payable</span>
+                      <span class="val highlight" id="confirmTotalAmount">₹7,000.00</span>
+                    </div>
+                    <div class="td-row">
+                      <span class="lbl">Idempotency Key</span>
+                      <span class="val mono" id="confirmIdempotencyKey">idemp_665a...</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sync Action Buttons -->
+                <div class="confirm-actions">
+                  <button class="btn-primary-large" onclick="triggerImmediateSync()">
+                    ⚡ Test Sync to Server Now
+                  </button>
+                  <button class="btn-secondary-large" onclick="navigateTo('dashboard')">
+                    Back to Dashboard
+                  </button>
+                  <button class="btn-outline-large" onclick="navigateTo('order_history')">
+                    View in Order History
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 7: Outbox & Sync Manager -->
+            <div class="app-screen" id="screen-sync_manager">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                <div class="appbar-title">
+                  <h2>Sync Engine & Outbox</h2>
+                  <span class="sub-text">Local-First Queue Manager</span>
+                </div>
+                <button class="icon-btn-round" onclick="triggerImmediateSync()" title="Run Sync Engine">⟳</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <!-- Sync Engine Status Banner -->
+                <div class="sync-engine-banner">
+                  <div class="banner-status-circle active"></div>
+                  <div class="banner-status-info">
+                    <h4 id="syncEngineStateTitle">Sync Engine Idle (Connected)</h4>
+                    <p id="syncEngineStateDesc">Next scheduled WorkManager sync in 12m</p>
+                  </div>
+                  <button class="btn-sync-action" id="btnManualSyncNow" onclick="triggerImmediateSync()">
+                    Sync Now
+                  </button>
+                </div>
+
+                <!-- Simulation Controls Card -->
+                <div class="sim-control-box">
+                  <h4 class="box-title">Engine Testing Scenarios</h4>
+                  <div class="sim-buttons-grid">
+                    <button class="btn-sim" id="simToggleNetBtn" onclick="toggleNetwork()">
+                      Toggle Offline / Online
+                    </button>
+                    <button class="btn-sim" onclick="simulate409Conflict()">
+                      Simulate 409 Stock Conflict
+                    </button>
+                    <button class="btn-sim" onclick="simulate500Error()">
+                      Simulate 500 Network Backoff
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Outbox Queue Items -->
+                <div class="section-header-row">
+                  <h3 class="section-title">Transactional Outbox Queue (<span id="outboxCount">0</span>)</h3>
+                  <span class="caption">Idempotent Pushes</span>
+                </div>
+
+                <div class="outbox-cards-list" id="outboxContainer">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 8: Order History & 1-Tap Reorder -->
+            <div class="app-screen" id="screen-order_history">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                <div class="appbar-title">
+                  <h2>Order History</h2>
+                  <span class="sub-text">Past Bookings & 1-Tap Reorder</span>
+                </div>
+              </div>
+
+              <!-- Filter Tabs -->
+              <div class="filter-chips-scroller" id="historyFilterTabs">
+                <button class="chip active" data-filter="all">All Orders</button>
+                <button class="chip" data-filter="synced">Synced (ERP)</button>
+                <button class="chip" data-filter="pending">Pending Outbox</button>
+                <button class="chip" data-filter="needs_review">Needs Review (409)</button>
+              </div>
+
+              <div class="screen-scrollable">
+                <div class="history-cards-list" id="orderHistoryList">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 9: AI Order Entry Assistant -->
+            <div class="app-screen" id="screen-ai_order">
+              <div class="screen-appbar">
+                <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                <div class="appbar-title">
+                  <h2>AI Free-Text Order</h2>
+                  <span class="sub-text">Prosessed NLP Engine</span>
+                </div>
+                <span class="sparkle-tag">LLM Proxy</span>
+              </div>
+
+              <div class="screen-scrollable">
+                <div class="ai-input-card">
+                  <div class="ai-card-header">
+                    <span class="ai-sparkle-icon">✨</span>
+                    <div>
+                      <h4 class="ai-box-heading">Type or Dictate Wholesale Order</h4>
+                      <p class="ai-box-sub">Enter customer name, quantities and products in plain English or Hinglish.</p>
+                    </div>
+                  </div>
+
+                  <textarea id="aiOrderTextInput" rows="4" placeholder="e.g. 10 cartons Maggi and 5 boxes Parle-G for Raju Traders"></textarea>
+
+                  <div class="sample-prompts-row">
+                    <span class="prompts-label">Try sample:</span>
+                    <button class="prompt-pill" onclick="setAiPrompt('10 cartons Maggi and 5 boxes Parle-G for Raju Traders')">Maggi & Parle-G</button>
+                    <button class="prompt-pill" onclick="setAiPrompt('20 cartons Tata Tea Gold, 15 boxes Fortune Sunlite Oil for Sharma General Store')">Tea & Oil</button>
+                    <button class="prompt-pill" onclick="setAiPrompt('50 cartons Colgate Strong Teeth for Lakshmi Super Bazaar')">Colgate 50ctn</button>
+                  </div>
+
+                  <button class="btn-primary-large" id="btnParseAiOrder" onclick="runAiOrderParse()">
+                    ⚡ Parse Free-Text into Structured Cart
+                  </button>
+                </div>
+
+                <!-- AI Parsed Result Review Section -->
+                <div class="ai-result-section hidden" id="aiResultSection">
+                  <div class="section-header-row">
+                    <h3 class="section-title">Parsed Cart Review</h3>
+                    <span class="confidence-tag">Human-In-The-Loop</span>
+                  </div>
+
+                  <div class="parsed-customer-card">
+                    <span class="lbl">Detected Customer:</span>
+                    <span class="val" id="aiCustomerMatch">Raju Traders</span>
+                  </div>
+
+                  <div class="parsed-lines-list" id="aiParsedLines">
+                    <!-- Populated dynamically -->
+                  </div>
+
+                  <div class="ai-actions-row">
+                    <button class="btn-primary-large" id="btnAcceptAiCart" onclick="acceptAiOrderToCart()">
+                      Confirm & Load into Cart 🛒
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Screen 10: Auth / Login -->
+            <div class="app-screen" id="screen-login">
+              <div class="screen-scrollable">
+                <div class="login-brand-header">
+                  <div class="login-logo-box">FO</div>
+                  <h2>FieldOrder</h2>
+                  <p>Enterprise Wholesale Sales Rep Portal</p>
+                </div>
+
+                <div class="login-card">
+                  <div class="form-group">
+                    <label>Sales Rep Email</label>
+                    <input type="email" id="loginEmail" value="rep@fieldorder.com" placeholder="rep@fieldorder.com">
+                  </div>
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" value="password123" placeholder="••••••••">
+                  </div>
+
+                  <div class="remember-row">
+                    <label class="checkbox-label">
+                      <input type="checkbox" checked id="rememberRepSession">
+                      <span>Remember on this device (Secure Storage)</span>
+                    </label>
+                  </div>
+
+                  <button class="btn-primary-large" id="btnLoginSubmit" onclick="performLogin()">
+                    Sign In to FieldOrder
+                  </button>
+
+                  <div class="security-badge-row">
+                    <span>🔒 flutter_secure_storage + Dio Refresh Interceptor</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Device Navigation Bar (4 Primary Tabs) -->
+          <nav class="phone-bottom-nav" id="phoneBottomNav">
+            <button class="nav-item active" data-target="dashboard" onclick="navigateTo('dashboard')">
+              <span class="nav-icon">📊</span>
+              <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-item" data-target="customers" onclick="navigateTo('customers')">
+              <span class="nav-icon">👥</span>
+              <span class="nav-label">Customers</span>
+            </button>
+            <button class="nav-item" data-target="products" onclick="navigateTo('products')">
+              <span class="nav-icon">📦</span>
+              <span class="nav-label">Catalog</span>
+            </button>
+            <button class="nav-item" data-target="cart" onclick="navigateTo('cart')">
+              <span class="nav-icon">🛒</span>
+              <span class="nav-label">Cart</span>
+              <span class="nav-badge-pill" id="navBottomCartBadge">0</span>
+            </button>
+            <button class="nav-item" data-target="sync_manager" onclick="navigateTo('sync_manager')">
+              <span class="nav-icon">🔄</span>
+              <span class="nav-label">Sync</span>
+              <span class="nav-badge-pill warning" id="navBottomSyncBadge">0</span>
+            </button>
+          </nav>
+
+          <!-- iOS Home Indicator -->
+          <div class="phone-home-indicator"></div>
+        </div>
+      </div>
+
+      <!-- Right Properties & Inspection Panel -->
+      <aside class="figma-properties-panel">
+        <div class="panel-section-title">COMPONENT INSPECT & SPECS</div>
+
+        <!-- Selected Screen Details -->
+        <div class="prop-group">
+          <label class="prop-label">CURRENT SCREEN</label>
+          <div class="prop-val-highlight" id="inspectScreenName">Rep Dashboard</div>
+          <div class="prop-desc" id="inspectScreenDesc">Clean architecture presentation layer with real-time stream subscription to Drift database.</div>
+        </div>
+
+        <!-- Ergonomic / Tap Target Specs -->
+        <div class="prop-group">
+          <label class="prop-label">FIELD ERGONOMICS AUDIT</label>
+          <div class="audit-item pass">
+            <span class="audit-icon">✓</span>
+            <div>
+              <strong>Tap Target Height: 48px - 56px</strong>
+              <p>Designed for one-hand operation by reps standing in wholesale shops.</p>
+            </div>
+          </div>
+          <div class="audit-item pass">
+            <span class="audit-icon">✓</span>
+            <div>
+              <strong>Offline-First Resilience</strong>
+              <p>100% features function without internet connectivity.</p>
+            </div>
+          </div>
+          <div class="audit-item pass">
+            <span class="audit-icon">✓</span>
+            <div>
+              <strong>Idempotent Pushes</strong>
+              <p>UUID + Idempotency-Key prevents duplicate orders on mobile packet loss.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flutter Clean Arch Widget Snippet -->
+        <div class="prop-group">
+          <div class="code-header">
+            <label class="prop-label">FLUTTER BLOC CODE</label>
+            <button class="copy-snippet-btn" onclick="copyFlutterSnippet()">Copy Dart</button>
+          </div>
+          <pre class="dart-code-box" id="dartCodePreview"><code>// Flutter Clean Architecture implementation
+class DashboardPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder&lt;DashboardBloc, DashboardState&gt;(
+      builder: (context, state) {
+        return Scaffold(
+          body: StreamBuilder&lt;List&lt;Order&gt;&gt;(
+            stream: getIt&lt;OrderRepository&gt;().watchTodayOrders(),
+            builder: (context, snapshot) {
+              return OrderSummaryCard(orders: snapshot.data ?? []);
+            },
+          ),
+        );
+      },
+    );
+  }
+}</code></pre>
+        </div>
+
+        <!-- Drift Database Schema for this screen -->
+        <div class="prop-group">
+          <label class="prop-label">DRIFT SQLITE SCHEMA</label>
+          <pre class="sql-code-box"><code>CREATE TABLE orders (
+  id TEXT PRIMARY KEY,
+  customer_id TEXT NOT NULL,
+  status TEXT NOT NULL,
+  total REAL NOT NULL,
+  sync_status TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);</code></pre>
+        </div>
+      </aside>
+    </section>
+
+    <!-- VIEW 2: ALL SCREENS FIGMA CANVAS (Artboards side-by-side) -->
+    <section class="figma-view" id="viewCanvas">
+      <div class="artboards-canvas-header">
+        <h2>FieldOrder Complete Screen Flow (10 Artboards)</h2>
+        <p>Material 3 Design System • 8pt Grid • High-Fidelity Wholesale ERP Mobile Design</p>
+      </div>
+
+      <div class="artboards-grid">
+        <!-- Card 1 -->
+        <div class="artboard-card" onclick="jumpToScreen('dashboard')">
+          <div class="artboard-title-bar">01 • Rep Dashboard & KPIs</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-kpi">₹48,250 Today</div>
+            <div class="mini-btn">New Order</div>
+            <div class="mini-sync-status">🟢 Synced</div>
+          </div>
+          <div class="artboard-caption">DashboardBloc • Drift Stream</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="artboard-card" onclick="jumpToScreen('customers')">
+          <div class="artboard-title-bar">02 • Customer Directory</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-search">🔍 Search &lt;3s...</div>
+            <div class="mini-list-item">Raju Traders • ₹15,400</div>
+            <div class="mini-list-item">Sharma General • ₹0</div>
+          </div>
+          <div class="artboard-caption">CustomerListBloc • Indexed DB</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="artboard-card" onclick="jumpToScreen('customer_detail')">
+          <div class="artboard-title-bar">03 • Customer 360 View</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-hero">Raju Traders (Mumbai)</div>
+            <div class="mini-btn-full">🛒 Start New Order</div>
+          </div>
+          <div class="artboard-caption">CustomerDetailCubit</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="artboard-card" onclick="jumpToScreen('products')">
+          <div class="artboard-title-bar">04 • 500 Product Catalog</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-chips">Maggi • Parle • Tata</div>
+            <div class="mini-p-card">Maggi 70g [Carton/Box/Pcs]</div>
+          </div>
+          <div class="artboard-caption">ProductListBloc • Debounced 300ms</div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="artboard-card" onclick="jumpToScreen('cart')">
+          <div class="artboard-title-bar">05 • Cart & Pricing Engine</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-cart-line">10 Cartons × ₹480 = ₹4,800</div>
+            <div class="mini-total">Net Total: ₹7,000</div>
+          </div>
+          <div class="artboard-caption">CartBloc • Multi-unit calculation</div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="artboard-card" onclick="jumpToScreen('order_confirm')">
+          <div class="artboard-title-bar">06 • Order Confirmation & Lock</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-check">✓ Confirmed</div>
+            <div class="mini-mono">ORD-UUID-7718</div>
+          </div>
+          <div class="artboard-caption">OrderSubmitCubit • Transactional Outbox</div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="artboard-card" onclick="jumpToScreen('sync_manager')">
+          <div class="artboard-title-bar">07 • Outbox Sync Engine</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-outbox-pill">Exponential Backoff (30s)</div>
+            <div class="mini-btn">Retry 409 Conflict</div>
+          </div>
+          <div class="artboard-caption">SyncEngine • WorkManager Background</div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="artboard-card" onclick="jumpToScreen('order_history')">
+          <div class="artboard-title-bar">08 • Order History & Reorder</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-history-item">#1001 • ₹7,000 [Reorder ⟳]</div>
+          </div>
+          <div class="artboard-caption">OrderHistoryBloc • 1-Tap Re-pricing</div>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="artboard-card" onclick="jumpToScreen('ai_order')">
+          <div class="artboard-title-bar">09 • AI Free-Text Parser</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-ai">"10 ctn Maggi, 5 bx Parle-G"</div>
+            <div class="mini-tag">Confidence 94%</div>
+          </div>
+          <div class="artboard-caption">AiOrderCubit • Backend Proxy</div>
+        </div>
+
+        <!-- Card 10 -->
+        <div class="artboard-card" onclick="jumpToScreen('login')">
+          <div class="artboard-title-bar">10 • Auth & Token Session</div>
+          <div class="artboard-mini-screen">
+            <div class="mini-auth">rep@fieldorder.com</div>
+          </div>
+          <div class="artboard-caption">AuthBloc • Secure Storage</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: DESIGN SYSTEM TOKENS & SPECS -->
+    <section class="figma-view" id="viewTokens">
+      <div class="tokens-container">
+        <h2>FieldOrder Design System & Tokens</h2>
+        <p class="tokens-intro">Curated Material 3 Design Tokens optimized for wholesale field sales representatives.</p>
+
+        <!-- Color Tokens Palette -->
+        <div class="token-category">
+          <h3>1. Semantic Color Tokens</h3>
+          <div class="color-swatches-grid">
+            <div class="swatch-card" style="--c: #2563EB;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.primary.brand</span>
+                <span class="token-hex">#2563EB</span>
+                <span class="token-role">Brand Primary, Main CTA</span>
+              </div>
+            </div>
+            <div class="swatch-card" style="--c: #1E3A8A;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.primary.navy</span>
+                <span class="token-hex">#1E3A8A</span>
+                <span class="token-role">Enterprise Dark, App Bars</span>
+              </div>
+            </div>
+            <div class="swatch-card" style="--c: #059669;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.status.synced</span>
+                <span class="token-hex">#059669</span>
+                <span class="token-role">Online, Synced, In-Stock</span>
+              </div>
+            </div>
+            <div class="swatch-card" style="--c: #D97706;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.status.pending</span>
+                <span class="token-hex">#D97706</span>
+                <span class="token-role">Outbox Pending, Low Stock</span>
+              </div>
+            </div>
+            <div class="swatch-card" style="--c: #DC2626;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.status.conflict</span>
+                <span class="token-hex">#DC2626</span>
+                <span class="token-role">409 Conflict, Overdue Balance</span>
+              </div>
+            </div>
+            <div class="swatch-card" style="--c: #0F172A;">
+              <div class="swatch-preview"></div>
+              <div class="swatch-meta">
+                <span class="token-name">color.surface.dark</span>
+                <span class="token-hex">#0F172A</span>
+                <span class="token-role">Background, Dark Mode Cards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography Hierarchy -->
+        <div class="token-category">
+          <h3>2. Typography Scale (Inter & Outfit)</h3>
+          <div class="typography-table">
+            <div class="typo-row">
+              <span class="typo-role">Display Large</span>
+              <span class="typo-sample font-display">FieldOrder 28px Outfit SemiBold</span>
+              <span class="typo-spec">28px / 36px • 600</span>
+            </div>
+            <div class="typo-row">
+              <span class="typo-role">Headline Medium</span>
+              <span class="typo-sample font-head">Customer 360 & Directory</span>
+              <span class="typo-spec">20px / 28px • 600</span>
+            </div>
+            <div class="typo-row">
+              <span class="typo-role">Body Regular</span>
+              <span class="typo-sample">Maggi 2-Minute Noodles 70g (Pack of 12)</span>
+              <span class="typo-spec">14px / 20px • 400</span>
+            </div>
+            <div class="typo-row">
+              <span class="typo-role">Monospace ID</span>
+              <span class="typo-sample font-mono">ORD-2026-1001 • idemp_8f91</span>
+              <span class="typo-spec">12px / 16px • 500</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Touch Target Guidelines -->
+        <div class="token-category">
+          <h3>3. Wholesale Rep Field Ergonomics Guideline</h3>
+          <div class="ergonomics-box">
+            <div class="ergo-card">
+              <h4>Thumb-Zone Action Placement</h4>
+              <p>Primary CTA ("Confirm Order", "Add to Cart", "Sync Now") is anchored at the bottom 120px thumb reachable area.</p>
+            </div>
+            <div class="ergo-card">
+              <h4>High-Contrast Price Badges</h4>
+              <p>Wholesale prices and carton pack multipliers use high-contrast dark green or indigo badges for outdoor market readability.</p>
+            </div>
+            <div class="ergo-card">
+              <h4>Haptic & Visual Feedback</h4>
+              <p>Instant optimistic UI updates: clicking "Add" updates the cart count within 16ms before DB write completes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: DEVELOPER HANDOFF & CLEAN ARCHITECTURE CODE -->
+    <section class="figma-view" id="viewInspect">
+      <div class="inspect-container">
+        <h2>Developer Handoff & Architecture Blueprint</h2>
+        <p>Complete Clean Architecture implementation map for the Flutter & FastAPI engineering team.</p>
+
+        <div class="handoff-grid">
+          <!-- Architecture Flow Diagram -->
+          <div class="handoff-card">
+            <h3>Data Flow Contract (Offline-First)</h3>
+            <div class="flow-code-diagram">
+              <pre><code>+-------------------------------------------------------------+
+|              UI Layer (Flutter BLoC / Widgets)              |
++-------------------------------------------------------------+
+                               |
+                        reads & observes
+                               v
++-------------------------------------------------------------+
+|           Local Database Layer (Drift SQLite DB)            |
+|   - customers  - products  - orders  - order_lines - outbox  |
++-------------------------------------------------------------+
+               ^                               ^
+      writes   |                               | pushes pending
+               |                               |
++------------------------------+ +----------------------------+
+|         Delta Puller         | |    Sync Engine (Outbox)    |
+|   GET /customers?updated_at  | |   POST /orders + Idemp-Key |
++------------------------------+ +----------------------------+
+                               |
+                        network connection
+                               v
++-------------------------------------------------------------+
+|               Remote Backend API (FastAPI)                  |
++-------------------------------------------------------------+</code></pre>
+            </div>
+          </div>
+
+          <!-- Outbox & Idempotency Rules -->
+          <div class="handoff-card">
+            <h3>Outbox & Idempotency Specification</h3>
+            <ul class="spec-bullet-list">
+              <li><strong>Local-First:</strong> Every order creation writes to <code>orders</code> and <code>outbox</code> in a single SQLite transaction.</li>
+              <li><strong>Idempotency-Key:</strong> Generated on the client using <code>idemp_${uuid}</code>. Retries with the same key return 200 OK without creating duplicate orders.</li>
+              <li><strong>Exponential Backoff:</strong> Retries interval sequence: 30s ➡️ 1m ➡️ 2m ➡️ 5m ➡️ capped at 15m with jitter.</li>
+              <li><strong>409 Conflict Handling:</strong> When stock is exhausted on server, order moves to <code>needs_review</code> status with line-level conflict indicators. Rep can edit quantity and resubmit.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add Customer Modal -->
+  <dialog id="modalAddCustomer" class="figma-modal">
+    <div class="modal-dialog-content">
+      <div class="modal-header">
+        <h3>Add New Wholesale Customer</h3>
+        <button class="modal-close" onclick="closeAddCustomerModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Shop / Business Name</label>
+          <input type="text" id="newCustName" placeholder="e.g. Maruti Super Mart">
+        </div>
+        <div class="form-group">
+          <label>Owner Phone Number</label>
+          <input type="tel" id="newCustPhone" placeholder="+91 98200 12345">
+        </div>
+        <div class="form-group">
+          <label>City & Market Area</label>
+          <input type="text" id="newCustCity" placeholder="Mumbai, Maharashtra">
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" id="newCustAddress" placeholder="Shop #12, APMC Wholesale Market">
+        </div>
+        <div class="form-group">
+          <label>Opening Outstanding Balance (₹)</label>
+          <input type="number" id="newCustBalance" value="0">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeAddCustomerModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveNewCustomer()">Save Customer (Local DB)</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
