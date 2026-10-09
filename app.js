@@ -3,7 +3,7 @@
  * Interactive State Management mirroring Flutter BLoC & Drift Database
  */
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = window.location.protocol === "https:" ? "" : "http://localhost:8000";
 
 // App State (Simulated Drift Local Database & BLoC state)
 const state = {
@@ -117,6 +117,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function fetchBackendData() {
+  if (!API_BASE) {
+    console.log("Hosted HTTPS Demo Mode: Utilizing embedded Drift SQLite offline cache.");
+    return;
+  }
   try {
     const custRes = await fetch(`${API_BASE}/customers?limit=50`);
     if (custRes.ok) {
