@@ -106,11 +106,11 @@ class TestFieldOrder(unittest.TestCase):
     def test_09_customer_update(self):
         cid = "cus_101"
         payload = {
-            "name": "Raju Traders Updated",
+            "name": "Raju Traders",
             "phone": "+91 98201 44521",
-            "address": "Shop #45, Main Market",
+            "address": "Shop #45, Main Market, Road No 3",
             "city": "Mumbai, Maharashtra",
-            "outstanding_balance": 12000.0
+            "outstanding_balance": 15400.0
         }
         status, data = self.api_req(f"/customers/{cid}", method="PUT", data=payload)
         self.assertEqual(status, 200)

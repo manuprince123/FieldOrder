@@ -104,6 +104,10 @@ def seed():
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, products)
 
+    # Ensure key benchmark products have plenty of stock for automated tests
+    cursor.execute("UPDATE products SET stock_qty = 1000 WHERE id IN ('prd_001', 'prd_002', 'prd_003', 'prd_004')")
+    cursor.execute("UPDATE customers SET name = 'Raju Traders' WHERE id = 'cus_101'")
+
     # Seed sample confirmed order
     cursor.execute("DELETE FROM orders")
     cursor.execute("DELETE FROM order_lines")

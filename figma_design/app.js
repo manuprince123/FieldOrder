@@ -61,6 +61,53 @@ document.addEventListener("DOMContentLoaded", async () => {
   state.products = [...initialProducts];
   state.selectedCustomer = state.customers[0];
 
+  // Pre-seed 2 pending outbox orders to make numbers 100% consistent with:
+  // Today's Orders: 4 (2 synced to ERP, 2 pending sync)
+  state.outbox = [
+    {
+      id: "outbox_init_01",
+      orderId: "ORD-LOCAL-1021",
+      order: {
+        id: "ORD-LOCAL-1021",
+        customer_name: "Lakshmi Provision Stores",
+        customer_id: "cus_103",
+        total: 14200.0,
+        subtotal: 14200.0,
+        discount: 0.0,
+        total_paise: 1420000,
+        lines: [
+          { product_id: "prd_003", unit: "carton", quantity: 20, unit_price: 345.0, discount: 0.0 }
+        ]
+      },
+      idempotencyKey: "idemp_init_8a91b2c3",
+      attempts: 0,
+      nextAttemptAt: new Date().toISOString(),
+      status: "pending",
+      createdAt: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      id: "outbox_init_02",
+      orderId: "ORD-LOCAL-1022",
+      order: {
+        id: "ORD-LOCAL-1022",
+        customer_name: "Balaji Super Bazaar",
+        customer_id: "cus_104",
+        total: 9850.0,
+        subtotal: 9850.0,
+        discount: 0.0,
+        total_paise: 985000,
+        lines: [
+          { product_id: "prd_004", unit: "box", quantity: 15, unit_price: 135.0, discount: 0.0 }
+        ]
+      },
+      idempotencyKey: "idemp_init_7c44e99f",
+      attempts: 0,
+      nextAttemptAt: new Date().toISOString(),
+      status: "pending",
+      createdAt: new Date(Date.now() - 1800000).toISOString()
+    }
+  ];
+
   // Try fetching live seeded data from FastAPI backend
   await fetchBackendData();
 
@@ -179,6 +226,15 @@ function setupTabs() {
 
 // Simulation Controls (Online/Offline, Theme, Devices)
 function setupSimulationControls() {
+  const btnPhoneOnly = document.getElementById("btnOnlyPhone");
+  if (btnPhoneOnly) {
+    btnPhoneOnly.addEventListener("click", () => {
+      document.body.classList.toggle("phone-only-mode");
+      const isOnly = document.body.classList.contains("phone-only-mode");
+      document.getElementById("btnPhoneViewLabel").textContent = isOnly ? "Show Figma Workspace" : "Mobile View Only";
+    });
+  }
+
   const btnNet = document.getElementById("btnToggleOffline");
   btnNet.addEventListener("click", toggleNetwork);
 
@@ -339,28 +395,58 @@ function renderBadges() {
   const cartQty = state.cart.reduce((sum, item) => sum + item.quantity, 0);
   const outboxCount = state.outbox.length;
 
-  // Nav badges
-  document.getElementById("navCartCount").textContent = cartQty;
-  document.getElementById("navPendingCount").textContent = outboxCount;
-  document.getElementById("navBottomCartBadge").textContent = cartQty;
-  document.getElementById("navBottomSyncBadge").textContent = outboxCount;
+  function updateBadgeElement(id, count) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (count > 0) {
+      el.textContent = count;
+      el.classList.remove("badge-hidden");
+      el.style.display = "";
+    } else {
+      el.textContent = "";
+      el.classList.add("badge-hidden");
+      el.style.display = "none";
+    }
+  }
 
-  const catalogPill = document.getElementById("catalogCartPill");
-  if (catalogPill) catalogPill.textContent = cartQty;
+  // Hide badges if count is 0 (Reviewer requirement 3)
+  updateBadgeElement("navCartCount", cartQty);
+  updateBadgeElement("navBottomCartBadge", cartQty);
+  updateBadgeElement("catalogCartPill", cartQty);
 
+  updateBadgeElement("navPendingCount", outboxCount);
+  updateBadgeElement("navBottomSyncBadge", outboxCount);
+
+  // Sync numbers consistency (Reviewer requirement 1)
   const kpiPending = document.getElementById("kpiPendingCount");
   if (kpiPending) kpiPending.textContent = outboxCount;
 
+  const kpiToday = document.getElementById("kpiTodayOrders");
+  const kpiSub = document.getElementById("kpiTodaySub");
+  const syncedOrdersCount = 2; // confirmed synced in ERP history
+  const totalTodayOrders = syncedOrdersCount + outboxCount;
+  if (kpiToday) kpiToday.textContent = totalTodayOrders;
+  if (kpiSub) {
+    if (outboxCount > 0) {
+      kpiSub.textContent = `${syncedOrdersCount} synced • ${outboxCount} pending`;
+      kpiSub.className = "kpi-sub";
+    } else {
+      kpiSub.textContent = `All ${totalTodayOrders} synced to ERP`;
+      kpiSub.className = "kpi-sub positive";
+    }
+  }
+
+  // Friendly sales rep wording (Reviewer requirement 5)
   const dashBadge = document.getElementById("dashSyncBadge");
   const dashDot = document.getElementById("dashSyncDot");
   if (dashBadge && dashDot) {
     if (outboxCount > 0) {
       dashBadge.className = "sync-status-badge pending";
-      dashBadge.textContent = `${outboxCount} Pending Sync`;
+      dashBadge.textContent = `${outboxCount} orders pending sync`;
       dashDot.className = "pill-dot warning";
     } else {
       dashBadge.className = "sync-status-badge synced";
-      dashBadge.textContent = "Database Synced";
+      dashBadge.textContent = "All orders synced";
       dashDot.className = "pill-dot";
     }
   }

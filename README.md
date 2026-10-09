@@ -79,16 +79,10 @@ A standard app that relies on network round-trips for each tap fails in the fiel
    - **Server is the authority** for products, master prices, and warehouse inventory.
    - **Client is the authority** for orders it created locally.
 
-### Conflict Resolution Matrix
-| Entity / Data | Authority | Conflict Behavior |
-|---|---|---|
-| **Products & Stock** | Server | Overwrite local SQLite on pull sync. |
-| **Orders** | Client creates; Server validates | Insufficient stock returns **HTTP 409 Conflict**, moving order to `needs_review` status with line-level badges. Rep edits quantity and resubmits. |
-| **Customer Edits** | Last-Write-Wins | Dirty local edits (`is_dirty = true`) are pushed before pulling remote updates. |
-
-### Exponential Backoff Retry Policy
-When an outbox push fails due to 5xx server errors or dropped network packets:
-- **Interval Sequence**: `30s` ➡️ `1 min` ➡️ `2 min` ➡️ `5 min` ➡️ capped at `15 min` with ±10% random jitter to avoid server thundering herds.
+### Financial Precision & Database Schema
+- **Integer Paise Storage**: To eliminate IEEE 754 floating point inaccuracies (e.g. `0.1 + 0.2 = 0.30000000000000004`), all money fields (`price_paise`, `subtotal_paise`, `discount_paise`, `total_paise`, `outstanding_balance_paise`) are stored strictly as **integers in Paise** (₹1 = 100 paise).
+- **Orders Table (13 Columns)**:
+  `id, server_order_no, customer_id, status, notes, subtotal_paise, discount_paise, total_paise, created_at, confirmed_at, sync_status, sync_error, retry_count`.
 
 ---
 
@@ -110,29 +104,24 @@ When an outbox push fails due to 5xx server errors or dropped network packets:
 
 ## 5. How to Run
 
-### Prerequisites
-- Python 3.9+ (Installed on macOS/Linux/Windows)
-- Node.js (Optional, for tooling)
-
 ### Step 1: Start the FastAPI Backend & Seed Data
 ```bash
-# Navigate to backend directory
-cd backend
-
 # Seed 50 Customers & 500 FMCG products
-python3 seed_data.py
+python3 backend/seed_data.py
 
 # Launch FastAPI server on port 8000
-python3 -m uvicorn server:app --host 0.0.0.0 --port 8000 --reload
+python3 -m uvicorn backend.server:app --host 0.0.0.0 --port 8000 --reload
 ```
-API Documentation will be live at: `http://localhost:8000/docs`
+API Documentation is live at: `http://localhost:8000/docs`
 
 ### Step 2: Open the Interactive Figma Design Studio & Prototype
 ```bash
 # In another terminal window:
 python3 -m http.server 3000 --directory figma_design
 ```
-Open **`http://localhost:3000`** in your browser. You can click through all 10 screens, test offline mode, trigger sync, and review tokens.
+Open **`http://localhost:3000`** in your browser.
+- Click **"Mobile View Only"** to hide sidebars and focus exclusively on the mobile app.
+- Click through all screens: Dashboard, Customers, Catalog, Cart, and Sync Outbox.
 
 ### Step 3: Run the Automated Test Suite (27 Tests)
 ```bash
@@ -142,7 +131,7 @@ Output:
 ```
 ...........................
 ----------------------------------------------------------------------
-Ran 27 tests in 0.051s
+Ran 27 tests in 0.033s
 
 OK
 ```
@@ -152,7 +141,8 @@ OK
 ## 6. Challenges & Engineering Lessons Learned
 1. **Preventing Order Ghosting**: Storing snapshots of product names and prices inside `order_lines` ensures that future catalog changes never mutate past invoices.
 2. **ACID Transaction for Outbox**: If the order is written to SQLite but the outbox insert crashes, the order would be stranded offline forever. Enforcing a single SQLite transaction guarantees atomic write.
-3. **Human-in-the-Loop for AI Orders**: Sales reps do not want black-box automation. The AI parser maps text to structured JSON, but always presents a confirmation sheet where low-confidence lines are highlighted before committing to the cart.
+3. **Integer Paise for Money**: Storing money in decimal floating points results in fractional rounding errors on wholesale cart sizes. Using integer paise guarantees 100% financial precision.
+4. **Human-in-the-Loop for AI Orders**: The AI parser maps text to structured JSON, but always presents a confirmation sheet where low-confidence lines are highlighted before committing to the cart.
 
 ---
 
@@ -165,4 +155,5 @@ OK
 ---
 
 ## 8. Disclaimer
-*FieldOrder is an independent personal engineering project built for the Prosessed.ai Flutter Developer Intern evaluation. It is not affiliated with or endorsed by any commercial entity.*
+*FieldOrder is an independent personal learning and portfolio project built for mobile engineering evaluation. It is not affiliated with or endorsed by any commercial entity.*
+

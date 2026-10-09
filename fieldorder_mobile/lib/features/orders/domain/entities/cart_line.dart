@@ -33,8 +33,8 @@ class CartLine extends Equatable {
   final String productName;
   final OrderUnit unit;
   final int quantity;
-  final double unitPrice;
-  final double discount; // percentage e.g. 5.0
+  final int unitPricePaise; // Stored in integer paise (e.g. ₹288.00 = 28800)
+  final double discountPercent; // Line discount percentage (e.g. 5.0%)
   final int unitsPerCarton;
   final int unitsPerBox;
 
@@ -43,13 +43,39 @@ class CartLine extends Equatable {
     required this.productName,
     required this.unit,
     required this.quantity,
-    required this.unitPrice,
-    this.discount = 0.0,
+    required this.unitPricePaise,
+    this.discountPercent = 0.0,
     this.unitsPerCarton = 24,
     this.unitsPerBox = 12,
   });
 
-  /// Total units in individual pieces
+  /// Factory helper for creating from Rupee double
+  factory CartLine.fromRupees({
+    required String productId,
+    required String productName,
+    required OrderUnit unit,
+    required int quantity,
+    required double unitPriceRupees,
+    double discountPercent = 0.0,
+    int unitsPerCarton = 24,
+    int unitsPerBox = 12,
+  }) {
+    return CartLine(
+      productId: productId,
+      productName: productName,
+      unit: unit,
+      quantity: quantity,
+      unitPricePaise: (unitPriceRupees * 100).round(),
+      discountPercent: discountPercent,
+      unitsPerCarton: unitsPerCarton,
+      unitsPerBox: unitsPerBox,
+    );
+  }
+
+  /// Price in Rupees (for display)
+  double get unitPriceRupees => unitPricePaise / 100.0;
+
+  /// Total physical items in individual pieces
   int get totalPieces {
     switch (unit) {
       case OrderUnit.carton:
@@ -61,28 +87,34 @@ class CartLine extends Equatable {
     }
   }
 
-  /// Line gross subtotal before line discount
-  double get grossTotal {
-    return quantity * unitPrice;
+  /// Line gross total in Paise (integer arithmetic prevents 0.1 + 0.2 float errors)
+  int get grossTotalPaise {
+    return quantity * unitPricePaise;
   }
 
-  /// Line discount amount in currency
-  double get discountAmount {
-    return grossTotal * (discount / 100.0);
+  double get grossTotalRupees => grossTotalPaise / 100.0;
+
+  /// Line discount amount in Paise
+  int get discountAmountPaise {
+    return (grossTotalPaise * (discountPercent / 100.0)).round();
   }
 
-  /// Net line total after discount
-  double get netTotal {
-    return grossTotal - discountAmount;
+  double get discountAmountRupees => discountAmountPaise / 100.0;
+
+  /// Net line total in Paise
+  int get netTotalPaise {
+    return grossTotalPaise - discountAmountPaise;
   }
+
+  double get netTotalRupees => netTotalPaise / 100.0;
 
   CartLine copyWith({
     String? productId,
     String? productName,
     OrderUnit? unit,
     int? quantity,
-    double? unitPrice,
-    double? discount,
+    int? unitPricePaise,
+    double? discountPercent,
     int? unitsPerCarton,
     int? unitsPerBox,
   }) {
@@ -91,8 +123,8 @@ class CartLine extends Equatable {
       productName: productName ?? this.productName,
       unit: unit ?? this.unit,
       quantity: quantity ?? this.quantity,
-      unitPrice: unitPrice ?? this.unitPrice,
-      discount: discount ?? this.discount,
+      unitPricePaise: unitPricePaise ?? this.unitPricePaise,
+      discountPercent: discountPercent ?? this.discountPercent,
       unitsPerCarton: unitsPerCarton ?? this.unitsPerCarton,
       unitsPerBox: unitsPerBox ?? this.unitsPerBox,
     );
@@ -104,8 +136,8 @@ class CartLine extends Equatable {
         productName,
         unit,
         quantity,
-        unitPrice,
-        discount,
+        unitPricePaise,
+        discountPercent,
         unitsPerCarton,
         unitsPerBox,
       ];
