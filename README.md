@@ -4,10 +4,11 @@
 [![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-Passing-emerald?style=for-the-badge&logo=githubactions)](.github/workflows/ci.yml)
 [![Flutter Version](https://img.shields.io/badge/Flutter-3.22+-blue?style=for-the-badge&logo=flutter)](https://flutter.dev)
 [![Architecture](https://img.shields.io/badge/Clean%20Architecture-BLoC%20%2B%20Drift-indigo?style=for-the-badge)](fieldorder_mobile/)
-[![Backend](https://img.shields.io/badge/FastAPI-Seeded%20500%20SKUs-darkgreen?style=for-the-badge&logo=fastapi)](backend/)
+[![Live Demo](https://img.shields.io/badge/Live%20App%20Demo-GitHub%20Pages-blueviolet?style=for-the-badge&logo=github)](https://manuprince123.github.io/FieldOrder/)
 [![Tests Status](https://img.shields.io/badge/Automated%20Tests-67%2F67%20Passing-success?style=for-the-badge)](test_e2e_fieldorder.py)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
+> 🌐 **[Launch Live Interactive Web Prototype (GitHub Pages)](https://manuprince123.github.io/FieldOrder/)**  
 > 📄 **[Download the Full Technical Report & Interview Guide (PDF)](FieldOrder_Project_Report.pdf)**  
 > Comprehensive 4-page publication report covering architecture, sync engine invariants, integer-paise math, and interview Q&A.
 
