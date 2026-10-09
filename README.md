@@ -123,17 +123,20 @@ Open **`http://localhost:3000`** in your browser.
 - Click **"Mobile View Only"** to hide sidebars and focus exclusively on the mobile app.
 - Click through all screens: Dashboard, Customers, Catalog, Cart, and Sync Outbox.
 
-### Step 3: Run the Automated Test Suite (27 Tests)
+### Step 3: Run the Automated Test Suites
 ```bash
+# 1. Run the Full End-to-End Test Suite (40 tests - Frontend Prototype & Backend API)
+python3 test_e2e_fieldorder.py
+
+# 2. Run the Backend Domain Unit Test Suite (27 tests)
 python3 backend/test_suite.py
 ```
 Output:
 ```
-...........................
-----------------------------------------------------------------------
-Ran 27 tests in 0.033s
-
-OK
+=========================================================================
+  ALL 40 AUTOMATED TESTS PASSED SUCCESSFULLY! (100% HEALTHY)  
+=========================================================================
+Ran 27 tests in 0.033s - OK
 ```
 
 ---
