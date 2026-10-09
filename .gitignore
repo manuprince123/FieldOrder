@@ -1,0 +1,43 @@
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+fieldorder_mobile/build/
+fieldorder_mobile/.dart_tool/
+
+# IDEs & Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# SQLite Transient Files
+*.db-journal
+*.db-wal
+*.db-shm
